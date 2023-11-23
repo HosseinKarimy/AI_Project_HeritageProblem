@@ -113,7 +113,7 @@ for (int i = 0; i <100000;  i++)
         Best = temp;
 }
 
-Console.WriteLine(Best);
+Console.WriteLine(Best.Value);
 
 static Heritage HillClimbing()
 {
