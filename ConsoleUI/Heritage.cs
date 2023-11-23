@@ -3,11 +3,11 @@
 public class Heritage
 {
     public static List<double> AllItems;
-    private List<double> BigBrother;
-    private List<double> SmallBrother;
-    private List<double> Sister;
+    private LinkedList<double> BigBrother;
+    private LinkedList<double> SmallBrother;
+    private LinkedList<double> Sister;
     public double Value { get; init; }
-    public Heritage(List<double> BigBrother, List<double> SmallBrother, List<double> Sister)
+    public Heritage(LinkedList<double> BigBrother, LinkedList<double> SmallBrother, LinkedList<double> Sister)
     {
         this.BigBrother = BigBrother;
         this.SmallBrother = SmallBrother;
@@ -22,12 +22,14 @@ public class Heritage
         int BigBrotherItemsCount = new Random().Next(allItemsCount);
         int SmallBrotherItemsCount = new Random().Next(allItemsCount - BigBrotherItemsCount);
         int SisterItemsCount = allItemsCount - BigBrotherItemsCount - SmallBrotherItemsCount;
-        return new Heritage(AllItems.GetRange(0, BigBrotherItemsCount), AllItems.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount), AllItems.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount));
+        return new Heritage(new LinkedList<double>(AllItems.GetRange(0, BigBrotherItemsCount)),
+            new LinkedList<double>(AllItems.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount)),
+            new LinkedList<double>(AllItems.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount)));
     }
 
     public Heritage CopyOf()
     {
-        return new Heritage(new List<double>(BigBrother!), new List<double>(SmallBrother!), new List<double>(Sister!));
+        return new Heritage(new LinkedList<double>(BigBrother!), new LinkedList<double>(SmallBrother!), new LinkedList<double>(Sister!));
     }
 
     private double CalculateValue()
@@ -47,80 +49,80 @@ public class Heritage
         //for BigBrother
         for (int i = 0; i < current.BigBrother.Count; i++)
         {
-            double tempValue = current.BigBrother[0];
-            current.BigBrother.RemoveAt(0);
+            double tempValue = current.BigBrother.First!.Value;
+            current.BigBrother.RemoveFirst();
             //give to small brother
-            current.SmallBrother.Add(tempValue);
+            current.SmallBrother.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
 
-            current.SmallBrother.Remove(tempValue);
+            current.SmallBrother.RemoveLast();
             // give to sister
-            current.Sister.Add(tempValue);
+            current.Sister.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
             //back to big brother
-            current.Sister.Remove(tempValue);
-            current.BigBrother.Add(tempValue);
+            current.Sister.RemoveLast();
+            current.BigBrother.AddLast(tempValue);
         }
 
         //for SmallBrother
         for (int i = 0; i < current.SmallBrother.Count; i++)
         {
-            double tempValue = current.SmallBrother[0];
-            current.SmallBrother.RemoveAt(0);
+            double tempValue = current.SmallBrother.First!.Value;
+            current.SmallBrother.RemoveFirst();
 
             //give to Big brother
-            current.BigBrother.Add(tempValue);
+            current.BigBrother.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
 
-            current.BigBrother.Remove(tempValue);
+            current.BigBrother.RemoveLast();
             // give to sister
-            current.Sister.Add(tempValue);
+            current.Sister.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
             //back to Small brother
-            current.Sister.Remove(tempValue);
-            current.SmallBrother.Add(tempValue);
+            current.Sister.RemoveLast();
+            current.SmallBrother.AddLast(tempValue);
         }
 
         //for Sister
         for (int i = 0; i < current.Sister.Count; i++)
         {
-            double tempValue = current.Sister[0];
-            current.Sister.RemoveAt(0);
+            double tempValue = current.Sister.First!.Value;
+            current.Sister.RemoveFirst();
             //give to Big brother
-            current.BigBrother.Add(tempValue);
+            current.BigBrother.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
 
-            current.BigBrother.Remove(tempValue);
+            current.BigBrother.RemoveLast();
             // give to SmallBrother
-            current.SmallBrother.Add(tempValue);
+            current.SmallBrother.AddLast(tempValue);
             Temp = new(current.BigBrother, current.SmallBrother, current.Sister);
 
             if (bestDivide.Value > Temp.Value)
                 bestDivide = Temp;
 
-            //back to Small brother
-            current.SmallBrother.Remove(tempValue);
-            current.Sister.Add(tempValue);
+            //back to Sister
+            current.SmallBrother.RemoveLast();
+            current.Sister.AddLast(tempValue);
         }
 
         return bestDivide;
