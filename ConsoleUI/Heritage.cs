@@ -41,29 +41,6 @@ public class Heritage
         return new Heritage(new LinkedList<double>(tempList.GetRange(0, BigBrotherItemsCount)),
             new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount)),
             new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount)));
-
-        //var tempList = new List<double>(AllItems);
-        //tempList.Sort();
-
-        //LinkedList<double> list1 = new();
-        //LinkedList<double> list2 = new();
-        //LinkedList<double> list3 = new();
-
-        //while (true)
-        //{
-        //    list1.AddFirst(tempList[0]);
-        //    tempList.RemoveAt(0);
-        //    if (tempList.Count == 0) break;
-
-        //    list2.AddFirst(tempList[0]);
-        //    tempList.RemoveAt(0);
-        //    if (tempList.Count == 0) break;
-
-        //    list3.AddFirst(tempList[0]);
-        //    tempList.RemoveAt(0);
-        //    if (tempList.Count == 0) break;
-        //}
-        //return new Heritage(list1, list2, list3);
     }
 
     public Heritage CopyOf()
@@ -190,7 +167,7 @@ public class Heritage
 public static class Extensions
 {
     // Shuffle the list using Fisher-Yates algorithm
-    public static void Shuffle(this List<double> list)
+    public static void Shuffle(this List<double> list)  //۱۶,۱۰۱/۱۵۶۲ ms
     {
         var random = new Random();
         for (int i = list.Count - 1; i > 0; i--)
