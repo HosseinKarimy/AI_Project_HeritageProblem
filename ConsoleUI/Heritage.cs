@@ -4,11 +4,11 @@ public class Heritage
 {
     public static List<double> AllItems;
     private static double AllAmount;
-    private LinkedList<double> BigBrother;
+    private readonly LinkedList<double> BigBrother;
     private double? BigBrotherAmount;
-    private LinkedList<double> SmallBrother;
+    private readonly LinkedList<double> SmallBrother;
     private double? SmallBrotherAmount;
-    private LinkedList<double> Sister;
+    private readonly LinkedList<double> Sister;
     private double? SisterAmount;
     public double Value { get; init; }
 
@@ -32,14 +32,38 @@ public class Heritage
 
     public static Heritage FromRandom()
     {
-        AllItems.Shuffle();
-        int allItemsCount = AllItems.Count;
+        var tempList = new List<double>(AllItems);
+        tempList.Shuffle();
+        int allItemsCount = tempList.Count;
         int BigBrotherItemsCount = new Random().Next(allItemsCount);
         int SmallBrotherItemsCount = new Random().Next(allItemsCount - BigBrotherItemsCount);
         int SisterItemsCount = allItemsCount - BigBrotherItemsCount - SmallBrotherItemsCount;
-        return new Heritage(new LinkedList<double>(AllItems.GetRange(0, BigBrotherItemsCount)),
-            new LinkedList<double>(AllItems.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount)),
-            new LinkedList<double>(AllItems.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount)));
+        return new Heritage(new LinkedList<double>(tempList.GetRange(0, BigBrotherItemsCount)),
+            new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount)),
+            new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount)));
+
+        //var tempList = new List<double>(AllItems);
+        //tempList.Sort();
+
+        //LinkedList<double> list1 = new();
+        //LinkedList<double> list2 = new();
+        //LinkedList<double> list3 = new();
+
+        //while (true)
+        //{
+        //    list1.AddFirst(tempList[0]);
+        //    tempList.RemoveAt(0);
+        //    if (tempList.Count == 0) break;
+
+        //    list2.AddFirst(tempList[0]);
+        //    tempList.RemoveAt(0);
+        //    if (tempList.Count == 0) break;
+
+        //    list3.AddFirst(tempList[0]);
+        //    tempList.RemoveAt(0);
+        //    if (tempList.Count == 0) break;
+        //}
+        //return new Heritage(list1, list2, list3);
     }
 
     public Heritage CopyOf()
@@ -54,6 +78,24 @@ public class Heritage
         SmallBrotherAmount ??= SmallBrother.Sum();
         SisterAmount ??= Sister.Sum();
         return Math.Abs(BigBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SisterAmount.Value - 0.2 * AllAmount);
+    }
+
+    public void Print()
+    {
+        Console.WriteLine($"Value: {Value}");
+        Console.WriteLine($"BigBrother ItemsCount: {BigBrother.Count}");
+        Console.WriteLine($"BigBrother Amount: {BigBrotherAmount}");
+        Console.WriteLine($"SmallBrother ItemsCount: {SmallBrother.Count}");
+        Console.WriteLine($"SmallBrother Amount: {SmallBrotherAmount}");
+        Console.WriteLine($"Sister ItemsCount: {Sister.Count}");
+        Console.WriteLine($"Sister Amount: {SisterAmount}");
+
+        Console.Write("BigBrother Items:");
+        BigBrother.Print();
+        Console.Write("SmallBrother Items:");
+        SmallBrother.Print();
+        Console.Write("Sister Items:");
+        Sister.Print();
     }
 
     //pls send copy of the heritage (the heritage that send to this method will be modified)
@@ -156,6 +198,17 @@ public static class Extensions
             int j = random.Next(i + 1);
             (list[j], list[i]) = (list[i], list[j]);
         }
+    }
+
+    public static void Print(this LinkedList<double> list)
+    {
+        foreach (var item in list)
+        {
+            Console.Write(item + " , ");
+        }
+        Console.WriteLine();
+        Console.WriteLine("_______________");
+        Console.WriteLine();
     }
 
 }
