@@ -57,6 +57,11 @@ public class Heritage
         return Math.Abs(BigBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SisterAmount.Value - 0.2 * AllAmount);
     }
 
+    private static double CalculateValue(double BigBrotherAmount , double SmallBrotherAmount, double SisterAmount)
+    {
+        return Math.Abs(BigBrotherAmount - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount - 0.4 * AllAmount) + Math.Abs(SisterAmount - 0.2 * AllAmount);
+    }
+
     public void Print()
     {
         Console.WriteLine($"Value: {Value}");
@@ -79,7 +84,10 @@ public class Heritage
     public static Heritage BestNeighbor(Heritage current)
     {
         Heritage bestDivide = current;
-        Heritage Temp;
+        double BigBrotherAmountTemp = 0;
+        double SmallBrotherAmountTemp = 0;
+        double SisterAmountTemp = 0;
+        double Temp;
         //for BigBrother
         for (int i = 0; i < current.BigBrother.Count; i++)
         {
@@ -87,19 +95,25 @@ public class Heritage
             current.BigBrother.RemoveFirst();
             //give to small brother
             current.SmallBrother.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister,current.BigBrotherAmount - tempValue,current.SmallBrotherAmount + tempValue,current.SisterAmount);
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value - tempValue;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value + tempValue;
+            SisterAmountTemp = current.SisterAmount!.Value;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
             current.SmallBrother.RemoveLast();
             // give to sister
             current.Sister.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister , current.BigBrotherAmount - tempValue, current.SmallBrotherAmount , current.SisterAmount + tempValue );
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value - tempValue;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value;
+            SisterAmountTemp = current.SisterAmount!.Value + tempValue;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to big brother
             current.Sister.RemoveLast();
@@ -114,19 +128,25 @@ public class Heritage
 
             //give to Big brother
             current.BigBrother.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister , current.BigBrotherAmount + tempValue , current.SmallBrotherAmount - tempValue , current.SisterAmount);
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value + tempValue;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - tempValue;
+            SisterAmountTemp = current.SisterAmount!.Value;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
             current.BigBrother.RemoveLast();
             // give to sister
             current.Sister.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister, current.BigBrotherAmount , current.SmallBrotherAmount - tempValue , current.SisterAmount + tempValue);
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - tempValue;
+            SisterAmountTemp = current.SisterAmount!.Value + tempValue;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to Small brother
             current.Sister.RemoveLast();
@@ -140,19 +160,29 @@ public class Heritage
             current.Sister.RemoveFirst();
             //give to Big brother
             current.BigBrother.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister , current.BigBrotherAmount + tempValue , current.SmallBrotherAmount, current.SisterAmount - tempValue);
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value + tempValue;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value ;
+            SisterAmountTemp = current.SisterAmount!.Value - tempValue;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+
 
 
             current.BigBrother.RemoveLast();
             // give to SmallBrother
             current.SmallBrother.AddLast(tempValue);
-            Temp = new(current.BigBrother, current.SmallBrother, current.Sister , current.BigBrotherAmount , current.SmallBrotherAmount + tempValue , current.SisterAmount - tempValue);
+            BigBrotherAmountTemp = current.BigBrotherAmount!.Value;
+            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value + tempValue;
+            SisterAmountTemp = current.SisterAmount!.Value - tempValue;
+            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp.Value)
-                bestDivide = Temp;
+
+            if (bestDivide.Value > Temp)
+                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+
 
             //back to Sister
             current.SmallBrother.RemoveLast();
