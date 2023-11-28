@@ -153,7 +153,7 @@ public class Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
             current.SmallBrother.RemoveLast();
@@ -165,7 +165,7 @@ public class Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to big brother
             current.Sister.RemoveLast();
@@ -186,7 +186,7 @@ public class Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
             current.BigBrother.RemoveLast();
@@ -198,7 +198,7 @@ public class Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to Small brother
             current.Sister.RemoveLast();
@@ -219,7 +219,7 @@ public class Heritage
 
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
 
@@ -233,7 +233,7 @@ public class Heritage
 
 
             if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother, current.SmallBrother, current.Sister, BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
             //back to Sister
@@ -325,6 +325,11 @@ public static class Extensions
             int j = random.Next(i + 1);
             (list[j], list[i]) = (list[i], list[j]);
         }
+    }
+
+    public static LinkedList<double> CreateCopy(this LinkedList<double> main)
+    {
+        return new LinkedList<double>(main);
     }
 
     public static void Print(this LinkedList<double> list)
