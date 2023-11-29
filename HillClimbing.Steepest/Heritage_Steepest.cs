@@ -1,4 +1,6 @@
-﻿namespace HillClimbing;
+﻿using System.Runtime.CompilerServices;
+
+namespace HillClimbing;
 
 public class Heritage_Steepest : Heritage
 {
@@ -61,8 +63,9 @@ public class Heritage_Steepest : Heritage
     }
 
     //pls send copy of the heritage (the heritage that send to this method will be modified)
-    public static Heritage_Steepest BestNeighbor(Heritage_Steepest current)
+    public Heritage_Steepest BestNeighbor()
     {
+        var current = CopyOf();
         Heritage_Steepest bestDivide = current;
         double Temp;
         double SmallBrotherAmountTemp;
@@ -80,7 +83,7 @@ public class Heritage_Steepest : Heritage
             SisterAmountTemp = current.SisterAmount!.Value;
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
@@ -92,7 +95,7 @@ public class Heritage_Steepest : Heritage
             SisterAmountTemp = current.SisterAmount!.Value + tempValue;
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to big brother
@@ -113,7 +116,7 @@ public class Heritage_Steepest : Heritage
             SisterAmountTemp = current.SisterAmount!.Value;
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
@@ -125,7 +128,7 @@ public class Heritage_Steepest : Heritage
             SisterAmountTemp = current.SisterAmount!.Value + tempValue;
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
             //back to Small brother
@@ -146,7 +149,7 @@ public class Heritage_Steepest : Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
@@ -160,7 +163,7 @@ public class Heritage_Steepest : Heritage
             Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
-            if (bestDivide.Value > Temp)
+            if (bestDivide.Value >= Temp)
                 bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
 
@@ -170,105 +173,6 @@ public class Heritage_Steepest : Heritage
         }
 
         return bestDivide;
-    }
-
-    public static Heritage_Steepest RandomNeighbor(Heritage_Steepest current)
-    {
-        Heritage_Steepest bestDivide = current;
-
-        var random = new Random();
-        int fromChild = random.Next(0, 3);
-
-        // from Big Brother
-        if (fromChild == 0)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to small Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to sister
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        // from Small Brother
-        if (fromChild == 1)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to Big Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to sister
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        // from Sister
-        if (fromChild == 2)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to Big Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to Small Brother
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        return bestDivide;
-    }
-
-}
-
-public static class Extensions
-{
-    // Shuffle the list using Fisher-Yates algorithm
-    public static void Shuffle(this List<double> list)  //۱۶,۱۰۱/۱۵۶۲ ms
-    {
-        //int threadId = Environment.CurrentManagedThreadId;
-        //long tickCount = DateTime.Now.Ticks;
-        //int seed = unchecked((int)(threadId ^ tickCount));
-        var random = new Random();
-
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1);
-            (list[j], list[i]) = (list[i], list[j]);
-        }
-    }
-
-    public static LinkedList<double> CreateCopy(this LinkedList<double> main)
-    {
-        return new LinkedList<double>(main);
-    }
-
-    public static void Print(this LinkedList<double> list)
-    {
-        foreach (var item in list)
-        {
-            Console.Write(item + " , ");
-        }
-        Console.WriteLine();
-        Console.WriteLine("_______________");
-        Console.WriteLine();
-    }
+    }   
 
 }

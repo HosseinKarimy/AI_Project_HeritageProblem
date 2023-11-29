@@ -46,7 +46,7 @@ public class HillClimbing_Steepest
         var Current = Heritage_Steepest.FromRandom();
         while (true)
         {
-            var bestNeighbor = Heritage_Steepest.BestNeighbor(Current.CopyOf());
+            var bestNeighbor = Current.BestNeighbor();
             if (Current.Value <= bestNeighbor.Value)
                 return Current;
             Current = bestNeighbor;
@@ -61,7 +61,7 @@ public class HillClimbing_Steepest
         {
             if (timeoutCounter == 15)
                 return Current;
-            var bestNeighbor = Heritage_Steepest.BestNeighbor(Current.CopyOf());
+            var bestNeighbor = Current.BestNeighbor();
             if (Current.Value == bestNeighbor.Value)
             {
                 Current = bestNeighbor;
