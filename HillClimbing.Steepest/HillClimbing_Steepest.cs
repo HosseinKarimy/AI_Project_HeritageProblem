@@ -1,16 +1,12 @@
 ﻿using System.Diagnostics;
 
-namespace HillClimbing.Steepest;
+namespace HillClimbing;
 
 public class HillClimbing_Steepest
 {
-    public HillClimbing_Steepest(List<double> items)
+    public static async Task TryClimbing(int TryNumber = 10, int TryTasks = 2)
     {
-        Heritage.AllItems = new LinkedList<double>(items);
-    }
-    public async Task TryClimbing(int TryNumber = 10, int TryTasks = 2)
-    {
-        Heritage Best = HillClimbing();
+        Heritage_Steepest Best = HillClimbing();
 
         object s = new();
 
@@ -45,27 +41,27 @@ public class HillClimbing_Steepest
         Best.Print();
     }
 
-    static Heritage HillClimbing()
+    static Heritage_Steepest HillClimbing()
     {
-        var Current = Heritage.FromRandom();
+        var Current = Heritage_Steepest.FromRandom();
         while (true)
         {
-            var bestNeighbor = Heritage.BestNeighbor(Current.CopyOf());
+            var bestNeighbor = Heritage_Steepest.BestNeighbor(Current.CopyOf());
             if (Current.Value <= bestNeighbor.Value)
                 return Current;
             Current = bestNeighbor;
         }
     }
 
-    static Heritage HillClimbing2(Heritage? heritage = null)
+    static Heritage_Steepest HillClimbing2(Heritage_Steepest? heritage = null)
     {
-        var Current = heritage ??= Heritage.FromRandom();
+        var Current = heritage ??= Heritage_Steepest.FromRandom();
         int timeoutCounter = 0;
         while (true)
         {
             if (timeoutCounter == 15)
                 return Current;
-            var bestNeighbor = Heritage.BestNeighbor(Current.CopyOf());
+            var bestNeighbor = Heritage_Steepest.BestNeighbor(Current.CopyOf());
             if (Current.Value == bestNeighbor.Value)
             {
                 Current = bestNeighbor;

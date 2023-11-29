@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{E2D99835-A932-4190-A3F5-2EC2D0D02927}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HillClimbing.Steepest", "HillClimbing.Steepest\HillClimbing.Steepest.csproj", "{9EDE3EDA-956D-4361-B871-BA207E3F0F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HillClimbing", "HillClimbing.Steepest\HillClimbing.csproj", "{9EDE3EDA-956D-4361-B871-BA207E3F0F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

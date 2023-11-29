@@ -1,346 +1,196 @@
-﻿namespace HillClimbing.Steepest;
+﻿namespace HillClimbing;
 
-public class Heritage
+public abstract class Heritage : IHeritage
 {
-    public static LinkedList<double> AllItems;
-    private static double AllAmount;
-    private readonly LinkedList<double> BigBrother;
-    private double? BigBrotherAmount;
-    private readonly LinkedList<double> SmallBrother;
-    private double? SmallBrotherAmount;
-    private readonly LinkedList<double> Sister;
-    private double? SisterAmount;
-    public double Value { get; init; }
-
-    public Heritage(LinkedList<double> BigBrother, LinkedList<double> SmallBrother, LinkedList<double> Sister)
+    //    private static readonly List<double> AllItems = new List<double>() {
+    //797, 398, 499, 492, 167, 951, 104, 846, 997, 901
+    //};
+    private static readonly List<double> AllItems = new()
     {
-        this.BigBrother = BigBrother;
-        this.SmallBrother = SmallBrother;
-        this.Sister = Sister;
+    1444685023.0,
+    147143653.0,
+    3553542816.0,
+    296924024.0,
+    2287143902.0,
+    3393614635.0,
+    4277729237.0,
+    2742856284.0,
+    3922118837.0,
+    1334251687.0,
+    1927764466.0,
+    3653303069.0,
+    4189953905.0,
+    905797322.0,
+    2048978342.0,
+    1976012864.0,
+    3780023666.0,
+    72593689.0,
+    3309147370.0,
+    2026598387.0,
+    1192920608.0,
+    2429354053.0,
+    2391167062.0,
+    2226593888.0,
+    489035206.0,
+    547245318.0,
+    2027952409.0,
+    1465626752.0,
+    3912271583.0,
+    1387505169.0,
+    3192017200.0,
+    755847237.0,
+    3669537464.0,
+    2506042949.0,
+    1030012019.0,
+    2142922365.0,
+    4107888203.0,
+    3012864664.0,
+    4086009460.0,
+    245558715.0,
+    545534357.0,
+    244236176.0,
+    634906628.0,
+    3752918838.0,
+    3546792543.0,
+    552427608.0,
+    3970438204.0,
+    785031284.0,
+    3831267936.0,
+    1118505600.0,
+    2833124253.0,
+    3305871370.0,
+    1955325325.0,
+    3617541657.0,
+    2149603724.0,
+    2187261515.0,
+    1324034615.0,
+    2387593042.0,
+    977866143.0,
+    623867858.0,
+    4212413696.0,
+    2745928654.0,
+    3217677041.0,
+    3213529958.0,
+    2428790239.0,
+    1107949140.0,
+    728885317.0,
+    2170790102.0,
+    2584491919.0,
+    2531144770.0,
+    2788449507.0,
+    3379213673.0,
+    3948496054.0,
+    2955853479.0,
+    3821232074.0,
+    1104466351.0,
+    4225208446.0,
+    2298292067.0,
+    3148968554.0,
+    4272714002.0,
+    104717507.0,
+    486843667.0,
+    1553709427.0,
+    3655311003.0,
+    1759685834.0,
+    906228413.0,
+    572712225.0,
+    1161296095.0,
+    3458485926.0,
+    805746663.0,
+    2456903478.0,
+    4058822183.0,
+    2321337986.0,
+    2115250876.0,
+    2106466203.0,
+    2866489240.0,
+    539240199.0,
+    565575138.0,
+    2452567575.0,
+    1025393815.0
+};   
+    private static readonly double AllAmount = AllItems.Sum();
+    public IEnumerable<double> BigBrotherItems { get; init; }
+    public IEnumerable<double> SmallBrotherItems { get; init; }
+    public IEnumerable<double> SisterItems { get; init; }
+    public double Value { get ; init; }
+    protected double? BigBrotherAmount;
+    protected double? SmallBrotherAmount;
+    protected double? SisterAmount;
+
+    public Heritage(IEnumerable<double> BigBrotherItems , IEnumerable<double> SmallBrotherItems , IEnumerable<double> SisterItems)
+    {
+        this.BigBrotherItems = BigBrotherItems;
+        this.SmallBrotherItems = SmallBrotherItems;
+        this.SisterItems = SisterItems;
         Value = CalculateValue();
     }
-    public Heritage(LinkedList<double> BigBrother, LinkedList<double> SmallBrother, LinkedList<double> Sister, double? BigBrotherAmount, double? SmallBrotherAmount, double? SisterAmount)
+
+    protected static (IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems) GetRandom()
     {
-        this.BigBrother = BigBrother;
-        this.SmallBrother = SmallBrother;
-        this.Sister = Sister;
-        this.BigBrotherAmount = BigBrotherAmount;
-        this.SmallBrotherAmount = SmallBrotherAmount;
-        this.SisterAmount = SisterAmount;
-        Value = CalculateValue();
-    }
+        var allItemTemp = new Stack<double>(AllItems);
+        var bigBrother = new List<double>();
+        var smallBrother = new List<double>();
+        var sister = new List<double>();
 
-    public static Heritage FromRandom()
-    {
-        var tempList = new LinkedList<double>(AllItems);
-        Random r = new Random();
-        var bigBrother = new LinkedList<double>();
-        var smallBrother = new LinkedList<double>();
-        var sister = new LinkedList<double>();
+        var r = new Random();
 
-
-
-
-        //while (tempList.Count > 0)
-        //{
-        //    int childIndex = r.Next(0, 5);
-        //    switch (childIndex)
-        //    {
-        //        case 0:
-        //        case 1:
-        //            bigBrother.AddLast(tempList.Last!.Value);
-        //            break;
-        //        case 2:
-        //        case 3:
-        //            smallBrother.AddLast(tempList.Last!.Value);
-        //            break;
-        //        case 4:
-        //            sister.AddLast(tempList.Last!.Value);
-        //            break;
-        //    }
-        //    tempList.RemoveLast();
-        //}
-        //return new Heritage(bigBrother, smallBrother, sister);
-
-
-
-        while (tempList.Count > 0)
+        while (allItemTemp.Count > 0)
         {
-            int childIndex = r.Next(0, 3);
+            int childIndex = r.Next(0, 5);
+            var item = allItemTemp.Pop();
             switch (childIndex)
             {
                 case 0:
-                    bigBrother.AddLast(tempList.Last!.Value);
-                    break;
                 case 1:
-                    smallBrother.AddLast(tempList.Last!.Value);
+                    bigBrother.Add(item);
                     break;
                 case 2:
-                    sister.AddLast(tempList.Last!.Value);
+                case 3:
+                    smallBrother.Add(item);
+                    break;
+                case 4:
+                    sister.Add(item);
                     break;
             }
-            tempList.RemoveLast();
         }
-        return new Heritage(bigBrother, smallBrother, sister);
 
 
+        //while (allItemTemp.Count > 0)
+        //{
+        //    int childIndex = r.Next(0, 3);
+        //    var item = allItemTemp.Pop();
+        //    switch (childIndex)
+        //    {
+        //        case 0:
+        //            bigBrother.Add(item);
+        //            break;
+        //        case 1:
+        //            smallBrother.Add(item);
+        //            break;
+        //        case 2:
+        //            sister.Add(item);
+        //            break;
+        //    }
+        //}
 
-        //tempList.Shuffle();
-        //int allItemsCount = tempList.Count;
-        //int BigBrotherItemsCount = new Random().Next(allItemsCount);
-        //int SmallBrotherItemsCount = new Random().Next(allItemsCount - BigBrotherItemsCount);
-        //int SisterItemsCount = allItemsCount - BigBrotherItemsCount - SmallBrotherItemsCount;
-        //return new Heritage(new LinkedList<double>(tempList.GetRange(0, BigBrotherItemsCount)),
-        //    new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount)),
-        //    new LinkedList<double>(tempList.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount)));
-    }
-
-    public Heritage CopyOf()
-    {
-        return new Heritage(new LinkedList<double>(BigBrother!), new LinkedList<double>(SmallBrother!), new LinkedList<double>(Sister!));
+        return (bigBrother, smallBrother, sister);
     }
 
     private double CalculateValue()
     {
-        AllAmount = AllItems!.Sum();
-        BigBrotherAmount ??= BigBrother.Sum();
-        SmallBrotherAmount ??= SmallBrother.Sum();
-        SisterAmount ??= Sister.Sum();
+        BigBrotherAmount ??= BigBrotherItems.Sum();
+        SmallBrotherAmount ??= SmallBrotherItems.Sum();
+        SisterAmount ??= SisterItems.Sum();
         return Math.Abs(BigBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount.Value - 0.4 * AllAmount) + Math.Abs(SisterAmount.Value - 0.2 * AllAmount);
     }
 
-    private static double CalculateValue(double BigBrotherAmount, double SmallBrotherAmount, double SisterAmount)
+    public static double CalculateValue(double BigBrotherAmount, double SmallBrotherAmount, double SisterAmount)
     {
         return Math.Abs(BigBrotherAmount - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount - 0.4 * AllAmount) + Math.Abs(SisterAmount - 0.2 * AllAmount);
     }
 
-    public void Print()
+    public IHeritage GetNeighbor()
     {
-        Console.WriteLine($"Value: {Value}");
-        Console.WriteLine($"BigBrother ItemsCount: {BigBrother.Count}");
-        Console.WriteLine($"BigBrother Amount: {BigBrotherAmount}");
-        Console.WriteLine($"SmallBrother ItemsCount: {SmallBrother.Count}");
-        Console.WriteLine($"SmallBrother Amount: {SmallBrotherAmount}");
-        Console.WriteLine($"Sister ItemsCount: {Sister.Count}");
-        Console.WriteLine($"Sister Amount: {SisterAmount}");
-
-        Console.Write("BigBrother Items:");
-        BigBrother.Print();
-        Console.Write("SmallBrother Items:");
-        SmallBrother.Print();
-        Console.Write("Sister Items:");
-        Sister.Print();
+        throw new NotImplementedException();
     }
-
-    //pls send copy of the heritage (the heritage that send to this method will be modified)
-    public static Heritage BestNeighbor(Heritage current)
-    {
-        Heritage bestDivide = current;
-        double Temp;
-        double SmallBrotherAmountTemp;
-        double SisterAmountTemp;
-        double BigBrotherAmountTemp;
-        //for BigBrother
-        for (int i = 0; i < current.BigBrother.Count; i++)
-        {
-            double tempValue = current.BigBrother.First!.Value;
-            current.BigBrother.RemoveFirst();
-            //give to small brother
-            current.SmallBrother.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value - tempValue;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value + tempValue;
-            SisterAmountTemp = current.SisterAmount!.Value;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-            current.SmallBrother.RemoveLast();
-            // give to sister
-            current.Sister.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value - tempValue;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value;
-            SisterAmountTemp = current.SisterAmount!.Value + tempValue;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            //back to big brother
-            current.Sister.RemoveLast();
-            current.BigBrother.AddLast(tempValue);
-        }
-
-        //for SmallBrother
-        for (int i = 0; i < current.SmallBrother.Count; i++)
-        {
-            double tempValue = current.SmallBrother.First!.Value;
-            current.SmallBrother.RemoveFirst();
-
-            //give to Big brother
-            current.BigBrother.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value + tempValue;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - tempValue;
-            SisterAmountTemp = current.SisterAmount!.Value;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-            current.BigBrother.RemoveLast();
-            // give to sister
-            current.Sister.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - tempValue;
-            SisterAmountTemp = current.SisterAmount!.Value + tempValue;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-            //back to Small brother
-            current.Sister.RemoveLast();
-            current.SmallBrother.AddLast(tempValue);
-        }
-
-        //for Sister
-        for (int i = 0; i < current.Sister.Count; i++)
-        {
-            double tempValue = current.Sister.First!.Value;
-            current.Sister.RemoveFirst();
-            //give to Big brother
-            current.BigBrother.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value + tempValue;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value;
-            SisterAmountTemp = current.SisterAmount!.Value - tempValue;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-
-            current.BigBrother.RemoveLast();
-            // give to SmallBrother
-            current.SmallBrother.AddLast(tempValue);
-            BigBrotherAmountTemp = current.BigBrotherAmount!.Value;
-            SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value + tempValue;
-            SisterAmountTemp = current.SisterAmount!.Value - tempValue;
-            Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-            if (bestDivide.Value > Temp)
-                bestDivide = new(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-
-
-            //back to Sister
-            current.SmallBrother.RemoveLast();
-            current.Sister.AddLast(tempValue);
-        }
-
-        return bestDivide;
-    }
-
-    public static Heritage RandomNeighbor(Heritage current)
-    {
-        Heritage bestDivide = current;
-
-        var random = new Random();
-        int fromChild = random.Next(0, 3);
-
-        // from Big Brother
-        if (fromChild == 0)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to small Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to sister
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        // from Small Brother
-        if (fromChild == 1)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to Big Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to sister
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        // from Sister
-        if (fromChild == 2)
-        {
-            int toChild = random.Next(0, 2);
-
-            //to Big Brother
-            if (toChild == 0)
-            {
-
-            }
-
-            //to Small Brother
-            if (toChild == 1)
-            {
-
-            }
-        }
-
-        return bestDivide;
-    }
-
-}
-
-public static class Extensions
-{
-    // Shuffle the list using Fisher-Yates algorithm
-    public static void Shuffle(this List<double> list)  //۱۶,۱۰۱/۱۵۶۲ ms
-    {
-        //int threadId = Environment.CurrentManagedThreadId;
-        //long tickCount = DateTime.Now.Ticks;
-        //int seed = unchecked((int)(threadId ^ tickCount));
-        var random = new Random();
-
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1);
-            (list[j], list[i]) = (list[i], list[j]);
-        }
-    }
-
-    public static LinkedList<double> CreateCopy(this LinkedList<double> main)
-    {
-        return new LinkedList<double>(main);
-    }
-
-    public static void Print(this LinkedList<double> list)
-    {
-        foreach (var item in list)
-        {
-            Console.Write(item + " , ");
-        }
-        Console.WriteLine();
-        Console.WriteLine("_______________");
-        Console.WriteLine();
-    }
-
 }
