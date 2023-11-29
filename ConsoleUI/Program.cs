@@ -1,7 +1,4 @@
-﻿
-using ConsoleUI;
-using System.Diagnostics;
-using System.Text;
+﻿using HillClimbing.Steepest;
 
 var AllItems = new List<double>
 {
@@ -106,92 +103,16 @@ var AllItems = new List<double>
     2452567575.0,
     1025393815.0
 };
+
+//AllItems = new List<double>() {
+//797, 398, 499, 492, 167, 951, 104, 846, 997, 901
+//};
 AllItems.Sort();
+AllItems.Reverse();
 
-Heritage.AllItems = new LinkedList<double>(AllItems);
+HillClimbing_Steepest h = new(AllItems);
+await h.TryClimbing(10000, 4);
 
-Heritage Best = HillClimbing();
-
-object s = new();
-object l = new();
-
-Stopwatch sw = new();
-sw.Start();
-
-List<Task> tasks = new();
-for (int i = 0; i < 5; i++)
-{
-    var task = Task.Run(() =>
-    {
-        for (int i = 0; i < 1000000; i++)
-        {
-            var temp = HillClimbing();
-            if (temp.Value < Best.Value)
-                lock (s)
-                {
-                    if (temp.Value < Best.Value)
-                        Best = temp;
-                }
-        }
-    });
-    tasks.Add(task);
-}
-//_ = Task.Run(() =>
-//{
-//    for (int i = 0; i < 100; i++)
-//    {
-//        var temp = HillClimbing2(Best);
-
-//        if (temp.Value < Best.Value)
-//            Best = temp;
-//    }
-//});
-
-
-//Task.Delay(30000).Wait();
-
-await Task.WhenAll(tasks);
-
-TimeSpan ts = sw.Elapsed;
-string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
-Console.WriteLine("RunTime: " + elapsedTime);
-
-Best.Print();
 return 0;
 
 
-static Heritage HillClimbing()
-{
-    var Current = Heritage.FromRandom();
-    while (true)
-    {
-        var bestNeighbor = Heritage.BestNeighbor(Current.CopyOf());
-        if (Current.Value <= bestNeighbor.Value)
-            return Current;
-        Current = bestNeighbor;
-    }
-}
-
-static Heritage HillClimbing2(Heritage? heritage = null)
-{
-    var Current = heritage ??= Heritage.FromRandom();
-    int timeoutCounter = 0;
-    while (true)
-    {
-        if (timeoutCounter == 100)
-            return Current;
-        var bestNeighbor = Heritage.BestNeighbor(Current.CopyOf());
-        if (Current.Value == bestNeighbor.Value)
-        {
-            Current = bestNeighbor;
-            timeoutCounter++;
-        } else if (Current.Value < bestNeighbor.Value)
-        {
-            return Current;
-        } else
-        {
-            timeoutCounter = 0;
-            Current = bestNeighbor;
-        }
-    }
-}

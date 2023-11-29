@@ -1,4 +1,4 @@
-﻿namespace ConsoleUI;
+﻿namespace HillClimbing.Steepest;
 
 public class Heritage
 {
@@ -41,26 +41,26 @@ public class Heritage
 
 
 
-        while (tempList.Count > 0)
-        {
-            int childIndex = r.Next(0, 5);
-            switch (childIndex)
-            {
-                case 0:
-                case 1:
-                    bigBrother.AddLast(tempList.Last!.Value);
-                    break;
-                case 2:
-                case 3:
-                    smallBrother.AddLast(tempList.Last!.Value);
-                    break;
-                case 4:
-                    sister.AddLast(tempList.Last!.Value);
-                    break;
-            }
-            tempList.RemoveLast();
-        }
-        return new Heritage(bigBrother, smallBrother, sister);
+        //while (tempList.Count > 0)
+        //{
+        //    int childIndex = r.Next(0, 5);
+        //    switch (childIndex)
+        //    {
+        //        case 0:
+        //        case 1:
+        //            bigBrother.AddLast(tempList.Last!.Value);
+        //            break;
+        //        case 2:
+        //        case 3:
+        //            smallBrother.AddLast(tempList.Last!.Value);
+        //            break;
+        //        case 4:
+        //            sister.AddLast(tempList.Last!.Value);
+        //            break;
+        //    }
+        //    tempList.RemoveLast();
+        //}
+        //return new Heritage(bigBrother, smallBrother, sister);
 
 
 
@@ -81,7 +81,7 @@ public class Heritage
             }
             tempList.RemoveLast();
         }
-        return new Heritage(bigBrother,smallBrother,sister);
+        return new Heritage(bigBrother, smallBrother, sister);
 
 
 
