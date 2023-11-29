@@ -107,17 +107,22 @@ public abstract class Heritage : IHeritage
     565575138.0,
     2452567575.0,
     1025393815.0
-};   
+};
     private static readonly double AllAmount = AllItems.Sum();
     public IEnumerable<double> BigBrotherItems { get; init; }
     public IEnumerable<double> SmallBrotherItems { get; init; }
     public IEnumerable<double> SisterItems { get; init; }
-    public double Value { get ; init; }
+    public double Value { get; init; }
     protected double? BigBrotherAmount;
     protected double? SmallBrotherAmount;
     protected double? SisterAmount;
 
-    public Heritage(IEnumerable<double> BigBrotherItems , IEnumerable<double> SmallBrotherItems , IEnumerable<double> SisterItems)
+    public static void Initialize()
+    {
+        AllItems.Sort();
+    }
+
+    public Heritage(IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems)
     {
         this.BigBrotherItems = BigBrotherItems;
         this.SmallBrotherItems = SmallBrotherItems;
@@ -126,6 +131,11 @@ public abstract class Heritage : IHeritage
     }
 
     protected static (IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems) GetRandom()
+    {
+        return RandomMethod1();
+    }
+
+    private static (IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems) RandomMethod1()
     {
         var allItemTemp = new Stack<double>(AllItems);
         var bigBrother = new List<double>();
@@ -154,28 +164,53 @@ public abstract class Heritage : IHeritage
             }
         }
 
-
-        //while (allItemTemp.Count > 0)
-        //{
-        //    int childIndex = r.Next(0, 3);
-        //    var item = allItemTemp.Pop();
-        //    switch (childIndex)
-        //    {
-        //        case 0:
-        //            bigBrother.Add(item);
-        //            break;
-        //        case 1:
-        //            smallBrother.Add(item);
-        //            break;
-        //        case 2:
-        //            sister.Add(item);
-        //            break;
-        //    }
-        //}
-
         return (bigBrother, smallBrother, sister);
     }
 
+
+    private static (IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems) RandomMethod2()
+    {
+        var allItemTemp = new Stack<double>(AllItems);
+        var bigBrother = new List<double>();
+        var smallBrother = new List<double>();
+        var sister = new List<double>();
+
+        var r = new Random();
+
+        while (allItemTemp.Count > 0)
+        {
+            int childIndex = r.Next(0, 3);
+            var item = allItemTemp.Pop();
+            switch (childIndex)
+            {
+                case 0:
+                    bigBrother.Add(item);
+                    break;
+                case 1:
+                    smallBrother.Add(item);
+                    break;
+                case 2:
+                    sister.Add(item);
+                    break;
+            }
+        }
+
+        return (bigBrother, smallBrother, sister);
+    }
+    
+    private static (IEnumerable<double> BigBrotherItems, IEnumerable<double> SmallBrotherItems, IEnumerable<double> SisterItems) RandomMethod3()
+    {
+        var tempList = new List<double>(AllItems);
+        tempList.Shuffle();
+        int allItemsCount = tempList.Count;
+        int BigBrotherItemsCount = new Random().Next(allItemsCount);
+        int SmallBrotherItemsCount = new Random().Next(allItemsCount - BigBrotherItemsCount);
+        int SisterItemsCount = allItemsCount - BigBrotherItemsCount - SmallBrotherItemsCount;
+        return (tempList.GetRange(0, BigBrotherItemsCount),
+            tempList.GetRange(BigBrotherItemsCount, SmallBrotherItemsCount),
+            tempList.GetRange(BigBrotherItemsCount + SmallBrotherItemsCount, SisterItemsCount));
+
+    }
     private double CalculateValue()
     {
         BigBrotherAmount ??= BigBrotherItems.Sum();
@@ -193,4 +228,39 @@ public abstract class Heritage : IHeritage
     {
         throw new NotImplementedException();
     }
+}
+
+public static class Extensions
+{
+    // Shuffle the list using Fisher-Yates algorithm
+    public static void Shuffle(this List<double> list)  //۱۶,۱۰۱/۱۵۶۲ ms
+    {
+        int threadId = Environment.CurrentManagedThreadId;
+        long tickCount = DateTime.Now.Ticks;
+        int seed = unchecked((int)(threadId ^ tickCount));
+        var random = new Random(seed);
+
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+            (list[j], list[i]) = (list[i], list[j]);
+        }
+    }
+
+    public static LinkedList<double> CreateCopy(this LinkedList<double> main)
+    {
+        return new LinkedList<double>(main);
+    }
+
+    public static void Print(this LinkedList<double> list)
+    {
+        foreach (var item in list)
+        {
+            Console.Write(item + " , ");
+        }
+        Console.WriteLine();
+        Console.WriteLine("_______________");
+        Console.WriteLine();
+    }
+
 }
