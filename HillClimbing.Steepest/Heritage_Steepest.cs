@@ -34,7 +34,7 @@ public class Heritage_Steepest : Heritage
     }
 
     public static Heritage_Steepest FromRandom()
-    {
+    {        
         var lists = GetRandom();
         return new Heritage_Steepest(lists.BigBrotherItems, lists.SmallBrotherItems, lists.SisterItems);
     }
@@ -42,25 +42,7 @@ public class Heritage_Steepest : Heritage
     public Heritage_Steepest CopyOf()
     {
         return new Heritage_Steepest(new LinkedList<double>(BigBrother!), new LinkedList<double>(SmallBrother!), new LinkedList<double>(Sister!));
-    }
-
-    public void Print()
-    {
-        Console.WriteLine($"Value: {Value}");
-        Console.WriteLine($"BigBrother ItemsCount: {BigBrother.Count}");
-        Console.WriteLine($"BigBrother Amount: {BigBrotherAmount}");
-        Console.WriteLine($"SmallBrother ItemsCount: {SmallBrother.Count}");
-        Console.WriteLine($"SmallBrother Amount: {SmallBrotherAmount}");
-        Console.WriteLine($"Sister ItemsCount: {Sister.Count}");
-        Console.WriteLine($"Sister Amount: {SisterAmount}");
-
-        Console.Write("BigBrother Items:");
-        BigBrother.Print();
-        Console.Write("SmallBrother Items:");
-        SmallBrother.Print();
-        Console.Write("Sister Items:");
-        Sister.Print();
-    }
+    }   
 
     //pls send copy of the heritage (the heritage that send to this method will be modified)
     public Heritage_Steepest BestNeighbor()

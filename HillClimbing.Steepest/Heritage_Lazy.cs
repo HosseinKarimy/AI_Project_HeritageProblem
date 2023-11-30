@@ -112,22 +112,4 @@ public class Heritage_Lazy : Heritage
 
         return null;
     }
-
-    public void Print()
-    {
-        Console.WriteLine($"Value: {Value}");
-        Console.WriteLine($"BigBrother ItemsCount: {BigBrother.Count}");
-        Console.WriteLine($"BigBrother Amount: {BigBrotherAmount}");
-        Console.WriteLine($"SmallBrother ItemsCount: {SmallBrother.Count}");
-        Console.WriteLine($"SmallBrother Amount: {SmallBrotherAmount}");
-        Console.WriteLine($"Sister ItemsCount: {Sister.Count}");
-        Console.WriteLine($"Sister Amount: {SisterAmount}");
-
-        Console.Write("BigBrother Items:");
-        
-        Console.Write("SmallBrother Items:");
-
-        Console.Write("Sister Items:");
-
-    }
 }

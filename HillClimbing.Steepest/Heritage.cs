@@ -224,9 +224,22 @@ public abstract class Heritage : IHeritage
         return Math.Abs(BigBrotherAmount - 0.4 * AllAmount) + Math.Abs(SmallBrotherAmount - 0.4 * AllAmount) + Math.Abs(SisterAmount - 0.2 * AllAmount);
     }
 
-    public IHeritage GetNeighbor()
+    public void Print()
     {
-        throw new NotImplementedException();
+        Console.WriteLine($"Value: {Value}");
+        Console.WriteLine($"BigBrother ItemsCount: {BigBrotherItems.Count()}");
+        Console.WriteLine($"BigBrother Amount: {BigBrotherAmount}");
+        Console.WriteLine($"SmallBrother ItemsCount: {SmallBrotherItems.Count()}");
+        Console.WriteLine($"SmallBrother Amount: {SmallBrotherAmount}");
+        Console.WriteLine($"Sister ItemsCount: {SisterItems.Count()}");
+        Console.WriteLine($"Sister Amount: {SisterAmount}");
+
+        Console.Write("BigBrother Items:");
+        BigBrotherItems.Print();
+        Console.Write("SmallBrother Items:");
+        SmallBrotherItems.Print();
+        Console.Write("Sister Items:");
+        SisterItems.Print();
     }
 }
 
@@ -252,7 +265,7 @@ public static class Extensions
         return new LinkedList<double>(main);
     }
 
-    public static void Print(this LinkedList<double> list)
+    public static void Print(this IEnumerable<double> list)
     {
         foreach (var item in list)
         {
