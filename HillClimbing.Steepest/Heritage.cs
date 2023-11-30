@@ -265,6 +265,13 @@ public static class Extensions
         return new LinkedList<double>(main);
     }
 
+    public static double GetAndRemoveFirst(this LinkedList<double> node)
+    {
+        var first = node.First;
+        node.RemoveFirst();
+        return first!.Value;
+    }
+
     public static void Print(this IEnumerable<double> list)
     {
         foreach (var item in list)

@@ -56,7 +56,7 @@ public class Heritage_Steepest : Heritage
         //for BigBrother
         for (int i = 0; i < current.BigBrother.Count; i++)
         {
-            double tempValue = current.BigBrother.First!.Value;
+            double tempValue = current.BigBrother.GetAndRemoveFirst();
             current.BigBrother.RemoveFirst();
             //give to small brother
             current.SmallBrother.AddLast(tempValue);
@@ -88,8 +88,7 @@ public class Heritage_Steepest : Heritage
         //for SmallBrother
         for (int i = 0; i < current.SmallBrother.Count; i++)
         {
-            double tempValue = current.SmallBrother.First!.Value;
-            current.SmallBrother.RemoveFirst();
+            double tempValue = current.SmallBrother.GetAndRemoveFirst();
 
             //give to Big brother
             current.BigBrother.AddLast(tempValue);
@@ -121,8 +120,7 @@ public class Heritage_Steepest : Heritage
         //for Sister
         for (int i = 0; i < current.Sister.Count; i++)
         {
-            double tempValue = current.Sister.First!.Value;
-            current.Sister.RemoveFirst();
+            double tempValue = current.Sister.GetAndRemoveFirst();
             //give to Big brother
             current.BigBrother.AddLast(tempValue);
             BigBrotherAmountTemp = current.BigBrotherAmount!.Value + tempValue;
