@@ -112,4 +112,102 @@ public class Heritage_Lazy : Heritage
 
         return null;
     }
+
+    public Heritage_Lazy RandomNeighbor2()
+    {
+        var thisHeritageTemp = CopyOf();
+        var BigBrother = thisHeritageTemp.BigBrother;
+        var SmallBrother = thisHeritageTemp.SmallBrother;
+        var Sister = thisHeritageTemp.Sister;
+
+        var random = new Random();
+        int fromChild = random.Next(0, 3);
+        int toChild = random.Next(0, 2);
+
+        // from Big Brother
+        if (fromChild == 0)
+        {
+            int bigBrotherSelectedItemIndex = random.Next(0, BigBrother.Count);
+            var bigBrotherItem = BigBrother.ElementAt(bigBrotherSelectedItemIndex);
+            BigBrother.RemoveAt(bigBrotherSelectedItemIndex);
+
+            //to small Brother
+            if (toChild == 0)
+            {
+                SmallBrother.Add(bigBrotherItem);
+                int smallBrotherSelectedItemIndex = random.Next(0, SmallBrother.Count);
+                var smallBrotherItem = SmallBrother.ElementAt(smallBrotherSelectedItemIndex);
+                BigBrother.Add(smallBrotherItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+
+            //to sister
+            if (toChild == 1)
+            {
+                Sister.Add(bigBrotherItem);
+                int sisterSelectedItemIndex = random.Next(0, Sister.Count);
+                var sisterItem = Sister.ElementAt(sisterSelectedItemIndex);
+                BigBrother.Add(sisterItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+        }
+
+        // from Small Brother
+        if (fromChild == 1)
+        {
+            int smallBrotherSelectedItemIndex = random.Next(0, SmallBrother.Count);
+            var smallBrotherItem = SmallBrother.ElementAt(smallBrotherSelectedItemIndex);
+            SmallBrother.RemoveAt(smallBrotherSelectedItemIndex);
+
+            //to Big Brother
+            if (toChild == 0)
+            {
+                BigBrother.Add(smallBrotherItem);
+                int bigBrotherSelectedItemIndex = random.Next(0, BigBrother.Count);
+                var bigBrotherItem = BigBrother.ElementAt(bigBrotherSelectedItemIndex);
+                SmallBrother.Add(bigBrotherItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+
+            //to sister
+            if (toChild == 1)
+            {
+                Sister.Add(smallBrotherItem);
+                int sisterSelectedItemIndex = random.Next(0, Sister.Count);
+                var sisterItem = Sister.ElementAt(sisterSelectedItemIndex);
+                BigBrother.Add(sisterItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+        }
+
+        // from Sister
+        if (fromChild == 2)
+        {
+            int siterSelectedItemIndex = random.Next(0, Sister.Count);
+            var sisterItem = Sister.ElementAt(siterSelectedItemIndex);
+            Sister.RemoveAt(siterSelectedItemIndex);
+
+            //to Big Brother
+            if (toChild == 0)
+            {
+                BigBrother.Add(sisterItem);
+                int bigBrotherSelectedItemIndex = random.Next(0, BigBrother.Count);
+                var bigBrotherItem = BigBrother.ElementAt(bigBrotherSelectedItemIndex);
+                Sister.Add(bigBrotherItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+
+            //to Small Brother
+            if (toChild == 1)
+            {
+                SmallBrother.Add(sisterItem);
+                int smallBrotherSelectedItemIndex = random.Next(0, SmallBrother.Count);
+                var smallBrotherItem = SmallBrother.ElementAt(smallBrotherSelectedItemIndex);
+                Sister.Add(smallBrotherItem);
+                return new Heritage_Lazy(BigBrother, SmallBrother, Sister);
+            }
+        }
+
+        return null;
+    }
 }

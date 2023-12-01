@@ -46,7 +46,7 @@ public class HillClimbing_Lazy
         while (stopwatch.Elapsed < time)
         {
             counter++;
-            var randomNeighbor = Current.RandomNeighbor();
+            var randomNeighbor = Current.RandomNeighbor2();
             if (Current.Value > randomNeighbor.Value)
                 Current = randomNeighbor;
         }
