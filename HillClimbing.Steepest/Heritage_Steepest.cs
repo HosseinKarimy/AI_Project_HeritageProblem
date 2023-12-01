@@ -42,10 +42,14 @@ public class Heritage_Steepest : Heritage
     public Heritage_Steepest CopyOf()
     {
         return new Heritage_Steepest(new LinkedList<double>(BigBrother!), new LinkedList<double>(SmallBrother!), new LinkedList<double>(Sister!));
-    }   
+    }
 
-    //pls send copy of the heritage (the heritage that send to this method will be modified)
-    public Heritage_Steepest BestNeighbor()
+    public override Heritage_Steepest GetNeighbor()
+    {
+        return BestNeighbor2();
+    }
+
+    public Heritage_Steepest BestNeighbor() //O(3n^2)
     {
         var current = CopyOf();
         Heritage_Steepest bestDivide = current;
@@ -154,7 +158,7 @@ public class Heritage_Steepest : Heritage
         return bestDivide;
     }
 
-    public Heritage_Steepest BestNeighbor2()
+    public Heritage_Steepest BestNeighbor2()  //O(3n^3)
     {
         var current = CopyOf();
         Heritage_Steepest bestDivide = current;
@@ -297,5 +301,4 @@ public class Heritage_Steepest : Heritage
 
         return bestDivide;
     }
-
 }

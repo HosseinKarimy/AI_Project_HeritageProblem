@@ -33,6 +33,11 @@ public class Heritage_Lazy : Heritage
         return new Heritage_Lazy(new List<double>(BigBrother!), new List<double>(SmallBrother!), new List<double>(Sister!));
     }
 
+    public override Heritage_Lazy GetNeighbor()
+    {
+        return RandomNeighbor();
+    }
+
     public Heritage_Lazy RandomNeighbor()
     {
         var thisHeritageTemp = CopyOf();

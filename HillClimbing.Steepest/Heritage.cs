@@ -241,6 +241,8 @@ public abstract class Heritage : IHeritage
         Console.Write("Sister Items:");
         SisterItems.Print();
     }
+
+    public abstract Heritage GetNeighbor();
 }
 
 public static class Extensions
