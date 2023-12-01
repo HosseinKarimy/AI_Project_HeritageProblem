@@ -4,7 +4,7 @@ namespace HillClimbing;
 
 public class HillClimbing_Lazy
 {
-    public static async Task TryClimbing(TimeSpan time, int TryTasks = 2)
+    public static async Task<IHeritage> TryClimbing(TimeSpan time, int TryTasks = 2)
     {
         Heritage_Lazy Best = HillClimbing(TimeSpan.FromSeconds(1));
 
@@ -36,6 +36,7 @@ public class HillClimbing_Lazy
         Console.WriteLine("RunTime: " + elapsedTime);
 
         Best.Print();
+        return Best;
     }
 
     static Heritage_Lazy HillClimbing(TimeSpan time)

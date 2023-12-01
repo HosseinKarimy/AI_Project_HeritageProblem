@@ -4,9 +4,9 @@ namespace HillClimbing;
 
 public class HillClimbing_Stochastic
 {
-    public static async Task TryClimbing(TimeSpan time, int TryTasks = 2)
+    public static async Task<IHeritage> TryClimbing(TimeSpan time, int TryTasks = 2 , IHeritage? start = null)
     {
-        Heritage_Stochastic Best = HillClimbing(TimeSpan.FromSeconds(1));
+        Heritage_Stochastic Best = HillClimbing(TimeSpan.FromSeconds(1) , start);
 
         object s = new();
 
@@ -36,21 +36,18 @@ public class HillClimbing_Stochastic
         Console.WriteLine("RunTime: " + elapsedTime);
 
         Best.Print();
+
+        return Best;
     }
 
-    static Heritage_Stochastic HillClimbing(TimeSpan time)
+    static Heritage_Stochastic HillClimbing(TimeSpan time , IHeritage? start = null)
     {
-        int counter = 0;
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var Current = Heritage_Stochastic.FromRandom();
+        var Current = start is null ? Heritage_Stochastic.FromRandom() : new Heritage_Stochastic(start.BigBrotherItems,start.SmallBrotherItems,start.SisterItems);
         while (stopwatch.Elapsed < time)
         {
-            counter++;
-            var randomNeighbor = Current.GetNeighbor();
-            if (Current.Value > randomNeighbor.Value)
-                Current = randomNeighbor;
+            Current = Current.GetNeighbor();
         }
-        Console.WriteLine(counter);
         return Current;
     }
 
