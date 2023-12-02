@@ -11,4 +11,8 @@
     <ProjectReference Include="..\HillClimbing.Steepest\HillClimbing.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BestResults\" />
+  </ItemGroup>
+
 </Project>
