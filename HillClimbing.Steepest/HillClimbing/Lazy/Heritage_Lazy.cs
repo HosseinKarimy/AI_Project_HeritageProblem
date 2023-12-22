@@ -1,4 +1,6 @@
-﻿namespace HillClimbing;
+﻿using HillClimbing;
+
+namespace Algorithms.HillClimbing.Lazy;
 
 public class Heritage_Lazy : Heritage
 {
@@ -54,7 +56,7 @@ public class Heritage_Lazy : Heritage
         {
             int SelectedItemIndex = random.Next(0, BigBrother.Count);
             var selectedItem = BigBrother.ElementAt(SelectedItemIndex);
-                BigBrother.RemoveAt(SelectedItemIndex);
+            BigBrother.RemoveAt(SelectedItemIndex);
 
             //to small Brother
             if (toChild == 0)
@@ -76,7 +78,7 @@ public class Heritage_Lazy : Heritage
         {
             int SelectedItemIndex = random.Next(0, SmallBrother.Count);
             var selectedItem = SmallBrother.ElementAt(SelectedItemIndex);
-                SmallBrother.RemoveAt(SelectedItemIndex);
+            SmallBrother.RemoveAt(SelectedItemIndex);
 
             //to Big Brother
             if (toChild == 0)
@@ -98,7 +100,7 @@ public class Heritage_Lazy : Heritage
         {
             int SelectedItemIndex = random.Next(0, Sister.Count);
             var selectedItem = Sister.ElementAt(SelectedItemIndex);
-                Sister.RemoveAt(SelectedItemIndex);
+            Sister.RemoveAt(SelectedItemIndex);
 
             //to Big Brother
             if (toChild == 0)

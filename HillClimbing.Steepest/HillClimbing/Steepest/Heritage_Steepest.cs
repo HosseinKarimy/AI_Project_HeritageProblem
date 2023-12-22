@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
+using HillClimbing;
 
-namespace HillClimbing;
+namespace Algorithms.HillClimbing.Steepest;
 
 public class Heritage_Steepest : Heritage
 {
@@ -34,7 +35,7 @@ public class Heritage_Steepest : Heritage
     }
 
     public static Heritage_Steepest FromRandom()
-    {        
+    {
         var lists = GetRandom();
         return new Heritage_Steepest(lists.BigBrotherItems, lists.SmallBrotherItems, lists.SisterItems);
     }
@@ -195,7 +196,7 @@ public class Heritage_Steepest : Heritage
                 current.Sister.AddFirst(bigBrotherItem);
                 current.BigBrother.AddFirst(sisterItem);
                 BigBrotherAmountTemp = current.BigBrotherAmount!.Value - bigBrotherItem + sisterItem;
-                SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value ;
+                SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value;
                 SisterAmountTemp = current.SisterAmount!.Value + bigBrotherItem - sisterItem;
                 Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
@@ -223,7 +224,7 @@ public class Heritage_Steepest : Heritage
                 current.BigBrother.AddFirst(smallBrotherItem);
                 BigBrotherAmountTemp = current.BigBrotherAmount!.Value + smallBrotherItem - bigBrotherItem;
                 SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - smallBrotherItem + bigBrotherItem;
-                SisterAmountTemp = current.SisterAmount!.Value ;
+                SisterAmountTemp = current.SisterAmount!.Value;
                 Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
 
                 if (bestDivide.Value >= Temp)
@@ -239,7 +240,7 @@ public class Heritage_Steepest : Heritage
                 var sisterItem = current.Sister.GetAndRemoveFirst();
                 current.Sister.AddFirst(smallBrotherItem);
                 current.SmallBrother.AddFirst(sisterItem);
-                BigBrotherAmountTemp = current.BigBrotherAmount!.Value ;
+                BigBrotherAmountTemp = current.BigBrotherAmount!.Value;
                 SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value - smallBrotherItem + sisterItem;
                 SisterAmountTemp = current.SisterAmount!.Value + smallBrotherItem - sisterItem;
                 Temp = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);

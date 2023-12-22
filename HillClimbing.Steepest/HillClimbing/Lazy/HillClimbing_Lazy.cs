@@ -1,12 +1,13 @@
 ﻿using System.Diagnostics;
+using HillClimbing;
 
-namespace HillClimbing;
+namespace Algorithms.HillClimbing.Lazy;
 
-public class HillClimbing_Stochastic
+public class HillClimbing_Lazy
 {
-    public static async Task<IHeritage> TryClimbing(TimeSpan time, int TryTasks = 2 , IHeritage? start = null)
+    public static async Task<IHeritage> TryClimbing(TimeSpan time, int TryTasks = 2)
     {
-        Heritage_Stochastic Best = HillClimbing(TimeSpan.FromSeconds(1) , start);
+        Heritage_Lazy Best = HillClimbing(TimeSpan.FromSeconds(1));
 
         object s = new();
 
@@ -32,42 +33,48 @@ public class HillClimbing_Stochastic
         await Task.WhenAll(tasks);
 
         TimeSpan ts = sw.Elapsed;
-        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+        string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         Console.WriteLine("RunTime: " + elapsedTime);
 
         Best.Print();
-
         return Best;
     }
 
-    static Heritage_Stochastic HillClimbing(TimeSpan time , IHeritage? start = null)
+    static Heritage_Lazy HillClimbing(TimeSpan time)
     {
+        int counter = 0;
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var Current = start is null ? Heritage_Stochastic.FromRandom() : new Heritage_Stochastic(start.BigBrotherItems,start.SmallBrotherItems,start.SisterItems);
+        var Current = Heritage_Lazy.FromRandom();
         while (stopwatch.Elapsed < time)
         {
-            Current = Current.GetNeighbor();
+            counter++;
+            var randomNeighbor = Current.RandomNeighbor2();
+            if (Current.Value > randomNeighbor.Value)
+                Current = randomNeighbor;
         }
+        Console.WriteLine(counter);
         return Current;
     }
 
-    static Heritage_Stochastic HillClimbing2(Heritage_Stochastic? heritage = null)
+    static Heritage_Lazy HillClimbing2(Heritage_Lazy? heritage = null)
     {
-        var Current = heritage ??= Heritage_Stochastic.FromRandom();
+        var Current = heritage ??= Heritage_Lazy.FromRandom();
         int timeoutCounter = 0;
         while (true)
         {
             if (timeoutCounter == 15)
                 return Current;
-            var bestNeighbor = Current.GetNeighbor();
+            var bestNeighbor = Current.RandomNeighbor();
             if (Current.Value == bestNeighbor.Value)
             {
                 Current = bestNeighbor;
                 timeoutCounter++;
-            } else if (Current.Value < bestNeighbor.Value)
+            }
+            else if (Current.Value < bestNeighbor.Value)
             {
                 return Current;
-            } else
+            }
+            else
             {
                 timeoutCounter = 0;
                 Current = bestNeighbor;

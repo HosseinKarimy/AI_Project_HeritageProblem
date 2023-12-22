@@ -1,4 +1,6 @@
-﻿namespace HillClimbing;
+﻿using HillClimbing;
+
+namespace Algorithms.HillClimbing.Stochastic;
 
 public class Heritage_Stochastic : Heritage
 {
@@ -68,7 +70,7 @@ public class Heritage_Stochastic : Heritage
                 SmallBrotherAmountTemp = current.SmallBrotherAmount!.Value + bigBrotherItem - smallBrotherItem;
                 SisterAmountTemp = current.SisterAmount!.Value;
                 //var value = CalculateValue(BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
-                    var item = new Heritage_Stochastic(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
+                var item = new Heritage_Stochastic(current.BigBrother.CreateCopy(), current.SmallBrother.CreateCopy(), current.Sister.CreateCopy(), BigBrotherAmountTemp, SmallBrotherAmountTemp, SisterAmountTemp);
                 AllNeighbors.Add(item);
                 current.BigBrother.RemoveFirst();
                 current.SmallBrother.RemoveFirst();

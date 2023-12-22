@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
+using HillClimbing;
 
-namespace HillClimbing;
+namespace Algorithms.HillClimbing.Steepest;
 
 public class HillClimbing_Steepest
 {
@@ -36,7 +37,7 @@ public class HillClimbing_Steepest
         await Task.WhenAll(tasks);
 
         TimeSpan ts = sw.Elapsed;
-        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+        string elapsedTime = string.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         Console.WriteLine("RunTime: " + elapsedTime);
 
         Best.Print();
@@ -80,10 +81,12 @@ public class HillClimbing_Steepest
             {
                 Current = bestNeighbor;
                 timeoutCounter++;
-            } else if (Current.Value < bestNeighbor.Value)
+            }
+            else if (Current.Value < bestNeighbor.Value)
             {
                 return Current;
-            } else
+            }
+            else
             {
                 timeoutCounter = 0;
                 Current = bestNeighbor;
